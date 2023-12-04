@@ -56,7 +56,7 @@ fun solve1() {
 solve1()
 
 fun solve2() {
-    
+
     fun findNumber(y: Int, x: Int): Pair<Pair<Int, Int>, Int> {
         var stringNum = "" + data[y][x]
         var xMinus = x - 1
