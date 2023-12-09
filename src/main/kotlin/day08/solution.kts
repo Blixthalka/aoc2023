@@ -60,7 +60,6 @@ fun solve2(): BigDecimal {
                 leastCommonMultiple = steps
                 break
             }
-
         }
     }
     return leastCommonMultiple
