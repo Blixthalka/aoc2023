@@ -4,7 +4,7 @@ import Helpers.readFileByLine
 import java.math.BigDecimal
 import java.util.function.Predicate
 
-val data = readFileByLine("./data1.txt")
+val data = readFileByLine("./data.txt")
 val instruction = data.take(1)[0]
 val nodeMap = data.drop(2)
     .map { line ->

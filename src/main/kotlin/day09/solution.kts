@@ -2,7 +2,7 @@ package day09
 
 import Helpers.readFileByLine
 
-val data = readFileByLine("./data1.txt")
+val data = readFileByLine("./data.txt")
     .map { line -> line.trim().split("\\s".toRegex()).map { it.toInt() } }
     .map { numbers ->
         val levels = mutableListOf<List<Int>>(numbers)

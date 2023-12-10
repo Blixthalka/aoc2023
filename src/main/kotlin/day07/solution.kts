@@ -2,7 +2,7 @@ package day07
 
 import Helpers.readFileByLine
 
-val data = readFileByLine("./data1.txt")
+val data = readFileByLine("./data.txt")
     .map { line ->
         val v = line.split("\\s+".toRegex())
         Pair(v[0], v[1].toInt())

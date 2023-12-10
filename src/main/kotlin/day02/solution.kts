@@ -8,7 +8,7 @@ val maxBalls = mapOf(
     Pair("blue", 14)
 )
 
-val data = readFileByLine("./data1.txt")
+val data = readFileByLine("./data.txt")
     .map { it.replace(";", ",") }
     .map { line ->
         val splitted = line.split(":")

@@ -8,7 +8,7 @@ fun parse1(line: String): List<Long> {
         .map { it.toLong() }
 }
 
-val input = readFileByLine("./data1.txt")
+val input = readFileByLine("./data.txt")
 val data1 = input.map { parse1(it) }
 
 fun findRaceWins(time: Long, distance: Long): Int {

@@ -2,7 +2,7 @@ package day03
 
 import Helpers.readFileByLine
 
-val data = readFileByLine("./data1.txt")
+val data = readFileByLine("./data.txt")
 
 fun solve1() {
     fun isAdjacentToSymbol(x: Int, y: Int): Boolean {

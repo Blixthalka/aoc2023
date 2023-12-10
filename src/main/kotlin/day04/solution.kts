@@ -7,7 +7,7 @@ fun splitToInts(string: String): List<Int> {
         .map { it.toInt() }
 }
 
-val games = readFileByLine("./data1.txt")
+val games = readFileByLine("./data.txt")
     .map { line ->
         val (winning, numbers) = Regex("""Card\s+\d+:([\d\s]+)\|([\d ]+)""")
             .find(line.trim())!!

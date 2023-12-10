@@ -12,7 +12,7 @@ fun findNumber1(string: String): Char {
     throw RuntimeException("RIP");
 }
 
-val solution1 = readFileByLine("./data1.txt")
+val solution1 = readFileByLine("./data.txt")
     .map {
         val first = findNumber1(it)
         val last = findNumber1(it.reversed())
@@ -59,7 +59,7 @@ fun findNumber2(string: String, map:Map<String, Char>): Char {
     throw RuntimeException("RIP");
 }
 
-val solution2 = readFileByLine("./data1.txt")
+val solution2 = readFileByLine("./data.txt")
     .map {
         val first = findNumber2(it, numbers)
         val last = findNumber2(it.reversed(), numbersReversed)

@@ -36,7 +36,7 @@ class Mapping(private val from: BigDecimal, private val to: BigDecimal, private 
     }
 }
 
-val data = readFileByLine("./data1.txt")
+val data = readFileByLine("./data.txt")
 
 var seeds = listOf<BigDecimal>();
 var allInstructions = mutableListOf<List<Mapping>>();
