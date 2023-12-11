@@ -140,7 +140,7 @@ fun isNotEnclosed(yStart: Int, xStart: Int): Boolean {
     var visited = mutableListOf<Coord>()
     var toVisit = mutableListOf<Coord>(Coord(yStart, xStart))
 
-    while(toVisit.isNotEmpty()) {
+    while (toVisit.isNotEmpty()) {
         var curCoord = toVisit[0]
         val y = curCoord.y
         val x = curCoord.x
@@ -157,6 +157,7 @@ fun isNotEnclosed(yStart: Int, xStart: Int): Boolean {
 
                 if (yMove < 0 || yMove >= data2.size || xMove < 0 || xMove >= data2[yMove].size) {
                     resMap[Coord(y, x)] = true
+                    visited.forEach { resMap[it] = true }
                     return true
                 }
 
@@ -167,6 +168,7 @@ fun isNotEnclosed(yStart: Int, xStart: Int): Boolean {
                 } else if (resMap.contains(coord)) {
                     if (resMap[coord]!!) {
                         resMap[Coord(y, x)] = true
+                        visited.forEach { resMap[it] = true }
                         return true
                     } else {
                         continue
