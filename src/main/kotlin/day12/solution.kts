@@ -3,59 +3,65 @@ package day12
 import Helpers.readFileByLine
 
 data class Row(val row: String, val arrangement: List<Int>)
+data class CacheKey(val string: String, val arrangement: List<Int>)
 
+var cache = mutableMapOf<CacheKey, Long>()
 
-fun isBroken(row: String, arrangement: List<Int>): Boolean {
-    val v = row.split("?")[0]
-        .replace(".", " ").trim()
-        .split("\\s".toRegex())
-        .filter { it.isNotEmpty() }
-
-    for (i in 0..v.size - 2) {
-        if (i >= arrangement.size) {
-            return true
-        }
-        if(arrangement[i] != v[i].length) {
-            return true
-        }
-    }
-
-    return false
+fun containsOnlyBrokenOrUnknown(string: String): Boolean {
+    return string.length == string.filter { it == '?' || it == '#' }.length
 }
 
-fun solve(mainRow: Row): List<String> {
-    println(mainRow.row)
-
-    var alreadySolved = mutableListOf<String>()
-
-    fun solve2(row: String): List<String> {
-        if (isBroken(row, mainRow.arrangement)) {
-            return mutableListOf()
-        }
-        if (alreadySolved.contains(row)) {
-            return mutableListOf()
-        }
-        alreadySolved.add(row)
-
-        val toReplace = row.filter { it == '?' }.length
-        if (toReplace == 0) {
-            return mutableListOf(row)
-        }
-
-        var index = 0
-        return (0..toReplace).flatMap {
-            index = row.indexOf('?', index, false)
-            val arr = row.toCharArray()
-            arr[index] = '#'
-            val broken = String(arr)
-            arr[index] = '.'
-            val fixed = String(arr)
-            solve2(broken) + solve2(fixed)
-        }
+fun isUnknownOrOperational(string: String, index: Int): Boolean {
+    if (index < 0) {
+        return true
+    } else if (index >= string.length) {
+        return true
+    } else {
+        val char = string.get(index)
+        return char == '?' || char == '.'
     }
-    return solve2(mainRow.row)
 }
 
+fun solve(string: String, arrangements: List<Int>): Long {
+    if (arrangements.isEmpty()) {
+        return if (string.contains("#")) {
+            0L
+        } else {
+            1L
+        }
+    }
+    val key = CacheKey(string, arrangements)
+    if (cache.containsKey(key)) {
+        return cache[key]!!
+    }
+
+    val toPlace = arrangements[0]
+    var sum = 0L
+    for (startIndex in string.indices) {
+        val endIndex = startIndex + (toPlace - 1)
+
+        if (endIndex >= string.length) {
+            break
+        }
+
+        val subString = string.substring(startIndex, endIndex + 1)
+        val beforeString = string.substring(0, startIndex)
+
+        if (beforeString.contains('#')) {
+            break
+        }
+
+        if (containsOnlyBrokenOrUnknown(subString)
+            && isUnknownOrOperational(string, startIndex - 1)
+            && isUnknownOrOperational(string, endIndex + 1)
+        ) {
+            val afterString = string.substring(kotlin.math.min(endIndex + 2, string.length))
+            sum += solve(afterString, arrangements.drop(1))
+        }
+    }
+    cache[key] = sum
+    return sum
+}
 
 val data = readFileByLine("./data.txt")
     .map { line ->
@@ -63,39 +69,24 @@ val data = readFileByLine("./data.txt")
         val arranged = arrangements.split(",")
             .map { it.toInt() }
         Row(row, arranged)
-    }.sumOf { row ->
-        solve(row)
-            .filter { computedString ->
-
-                val computed = computedString.replace(".", " ").trim()
-                    .split("\\s".toRegex())
-                    .filter { it.isNotEmpty() }
-
-                val first = row.arrangement.mapIndexed { index, value ->
-                    if (index >= computed.size) {
-                        false
-                    } else {
-                        computed[index].length == value
-                    }
-                }
-                    .all { it }
-
-                val second = computed.mapIndexed { index, value ->
-                    if (index >= row.arrangement.size) {
-                        false
-                    } else {
-                        row.arrangement[index] == value.length
-                    }
-                }.all { it }
-                first && second
-            }
-            .distinct()
-            .count()
     }
 
-println("Solution 1: $data")
+val solution1 = data
+    .sumOf { row ->
+        solve(row.row, row.arrangement)
+    }
 
-val solution2 = readFileByLine("./data.txt")
+println("Solution 1: $solution1")
+
+val solution2 = data
+    .map { row ->
+        Row(
+            "${row.row}?${row.row}?${row.row}?${row.row}?${row.row}",
+            row.arrangement + row.arrangement + row.arrangement + row.arrangement + row.arrangement
+        )
+    }
+    .sumOf { row ->
+        solve(row.row, row.arrangement)
+    }
+
 println("Solution 2: $solution2")
-
-
